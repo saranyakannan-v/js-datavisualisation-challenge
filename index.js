@@ -50,7 +50,7 @@ dataset.forEach(function(datas) { // grab each element of the array 'dataset' = 
     object.data = arrData
     object.label = datas.children[1].innerText // label = innerText of the 2nd column of each row (except 1 and 2, we shifted those)
     object.borderColor = getRandomColor()
-    object.backgroundColor = getRandomColor()
+        //object.backgroundColor = getRandomColor()
         // object.fill = false
 
     datasetsTableOne.push(object)
@@ -70,7 +70,7 @@ console.log(datasetsTableOne)
 // 3. options
 
 new Chart(document.getElementById("chart"), {
-    type: 'bar',
+    type: 'line',
     data: {
         labels: labelsTableOne,
         datasets: datasetsTableOne
@@ -78,9 +78,65 @@ new Chart(document.getElementById("chart"), {
     options: {
         title: {
             display: true,
-            text: 'World population per region'
+            text: 'Records'
         }
     }
 });
 
 // Chart - 2
+
+// step 1 - Our labels along the x-axis
+
+var ppYears = ["2007-09", "2010-12"];
+console.log(ppYears);
+
+// step 2 -  Get the data for "datasets 2" into an array of objects
+
+let datasetsTableTwo = []
+
+dataset2 = Array.from(document.querySelectorAll('#table2 tbody tr'))
+console.log("-----dataset2 all rows in the table------")
+console.log(dataset2)
+
+
+dataset2.forEach(function(datas2) { // grab each element of the array 'dataset2' = each table row > and call it 'datas2'
+    let object2 = {} // there will be one object per row               
+
+    let arrData2 = [] // there will be one array of data per row
+
+    data2 = Array.from(datas2.children) // create an array composed of all children <td> of 'datas' (one by one each row)
+    data2.shift() // remove 1st cell N°
+    data2.shift() // remove 2nd cell Country
+
+    data2.forEach(function(td) {
+        arrData2.push(parseInt(td.innerText)) // pushing the <td> infos to the arrData2
+    })
+    console.log(arrData2)
+
+    // step 3 - here we declare the values of the 5 properties that each of our objects must contain:
+    object2.data = arrData2
+    object2.label = datas2.children[1].innerText // label = innerText of the 2nd column of each row (except 1 and 2, we shifted those)
+    object2.borderColor = getRandomColor()
+    object2.backgroundColor = getRandomColor()
+        //object2.fill = false
+
+    datasetsTableTwo.push(object2)
+
+})
+console.log(datasetsTableTwo)
+
+// Step 4
+
+new Chart(document.getElementById("chart2"), {
+    type: 'bar',
+    data: {
+        labels: ppYears,
+        datasets: datasetsTableTwo
+    },
+    options: {
+        title: {
+            display: true,
+            text: 'Prison population, average per year, 2007-09 and 2010-12'
+        }
+    }
+});
