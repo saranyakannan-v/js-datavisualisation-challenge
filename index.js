@@ -140,3 +140,45 @@ new Chart(document.getElementById("chart2"), {
         }
     }
 });
+
+// Chart -3 Realtime data
+// Using AJAX fetch() method to make fast and dynamic webpage
+
+setInterval(function() {
+
+        fetch(`https://canvasjs.com/services/data/datapoints.php?xstart=${Math.round(Math.random()*10)}&ystart=${Math.round(Math.random()*10)}&length=10&type=json}`) //connect to the API, send a request to get data from remote server and sends a HTTP request, GET random values
+            .then(response => { //  response here is the file that's coming back
+                return response.json(); //Json is a file format. That converts the file into JSON so that Javascript understands the data.
+            })
+            .then((data) => { // the converted file is now send to this next function, where I want to create a dataset to insert inside my chart
+                let arrayData3 = []; // I want to create an array of objects, with x and y coordinates
+                let object3 = {};
+                Array.from(data).forEach(element => { //data is an array of array with 2 nb in each, that I want to convert into an object with 2 keys( x and Y)
+                    object3 = { x: element[0], y: element[1] };
+                    arrayData3.push(object3);
+
+                })
+                console.log(arrayData3) //arrayOfData3 is now an array of objects with x and y coordinates
+
+                new Chart(document.getElementById("chart3"), {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: ' Datasets',
+                            data: arrayData3
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            xAxes: [{
+                                type: 'linear',
+                                position: 'bottom'
+                            }]
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, 1000) // 1000 ms is 1 minute every 1000ms the values will change. Because we used setInterval function for time setting.
